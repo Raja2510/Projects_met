@@ -31,11 +31,23 @@ def create_supplier(name,age,contact):
     else:
         return "This person already exsist"
 
-
-
-
-
-@app.post("/product")
-def create(name,quantity,catagory):
-    pass
-    
+@app.put("/supplier/update")
+def update_supplier(id,name,age,contact):
+    get_supplier=database.table("supplier").select("*").eq("id",id).execute()
+    if get_supplier.data==[]:
+        return  "This ID Doesnt Exsists"
+    else:
+        updated_supplier=database.table("supplier").update(
+            {"supplier_name":name,
+             "supplier_age":age,
+             "contact_info":contact
+             }
+        ).eq("id",id).execute()
+        return updated_supplier.data
+@app.delete("/supplier")
+def update_supplier(name):
+    del_supplier=database.table("supplier").delete().eq("supplier_name",name).execute()
+    if del_supplier.data==[]:
+        return  "This ID Doesnt Exsists"
+    else:
+        return del_supplier.data
